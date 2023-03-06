@@ -29,7 +29,7 @@ const argsOptions = {
     },
 }
 
-const func = (args, body) => {
+const processor = async (args, body) => {
     const {values} = args
     const list = mfsjea.jeamfsList(body, values['moachigi'])
     const filtered = list.filter(({source, destination}) => source === (values['source'] || source) && destination === (values['destination'] || destination))
@@ -44,5 +44,5 @@ const func = (args, body) => {
 module.exports = {
     labels,
     argsOptions,
-    func,
+    processor,
 }

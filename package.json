@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.0.3",
+    "phin": "^3.7.0",
+    "split-string": "^6.1.0",
     "telegraf": "^4.12.0"
   }
 }

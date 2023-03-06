@@ -23,7 +23,7 @@ const argsOptions = {
     },
 }
 
-const func = (args, body) => {
+const processor = async (args, body) => {
     const {values} = args
     if(values['upper'] === true) {
         return body.toUpperCase()
@@ -50,5 +50,5 @@ const func = (args, body) => {
 module.exports = {
     labels,
     argsOptions,
-    func,
+    processor,
 }

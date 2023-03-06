@@ -1,0 +1,13 @@
+version: '3'
+services:
+  bot:
+    build: ./
+    image: allnew-leebot
+    volumes:
+     - ./.env:/usr/src/app/.env
+    restart: always
+  seonbi:
+    build: ./seonbi
+    image: leebot-seonbi
+    command: seonbi-api -H 0.0.0.0 -p 80
+    restart: always

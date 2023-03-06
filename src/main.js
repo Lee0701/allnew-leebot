@@ -1,11 +1,20 @@
 
 require('dotenv').config()
 const {Telegraf} = require('telegraf')
-
 const {parseArgs} = require('node:util')
+const split = require('split-string')
+
 const commands = require('./commands')
 
-const CMD_SPLITTER = process.env['CMD_SPLITTER'] || ' '
+const CMDS_SPLITTER = process.env['CMD_SPLITTER'] || '|'
+const ARGS_SPLITTER = process.env['ARGS_SPLITTER'] || ' '
+const keep = (value, state) => {
+    return value !== '\\' && (value !== '"' || value !== "'" || state.prev() === '\\')
+}
+const splitOptions = {
+    quotes: ['"', "'"],
+    keep,
+}
 
 const bot = new Telegraf(process.env.TG_BOT_TOKEN)
 
@@ -22,25 +31,24 @@ const getLabel = (str) => {
     else return str.split('@')[0].slice(1)
 }
 
-const getBody = (arr) => {
-    if(arr[arr.length - 1].startsWith('-')) return ""
-    else return arr.pop()
-}
-
-const processCommand = (ctx) => {
+const processCommand = async (ctx) => {
     const text = ctx.message.text
-    const chunks = text.split('|').map((chunk) => chunk.trim())
+    const chunks = split(text, {separator: CMDS_SPLITTER, ...splitOptions}).map((chunk) => chunk.trim())
     let body = ''
-    chunks.forEach((chunk, i) => {
-        const args = chunk.split(CMD_SPLITTER)
+    for(let chunk of chunks) {
+        const args = split(chunk, {separator: ARGS_SPLITTER, ...splitOptions})
         const chunkCmdLabel = getLabel(args.shift())
-        const {argsOptions, func} = commands[chunkCmdLabel]
+        const {argsOptions, processor} = commands[chunkCmdLabel]
         const parsedArgs = parseArgs({args: args, options: argsOptions, strict: false, allowPositionals: true})
-        if(!body && parsedArgs.positionals.length) body = parsedArgs.positionals.join(CMD_SPLITTER)
-        const result = func(parsedArgs, body)
+        if(!body && parsedArgs.positionals.length) body = parsedArgs.positionals.join(ARGS_SPLITTER)
+        const result = await processor(parsedArgs, body)
         body = result
-    })
-    ctx.reply(body)
+    }
+    try {
+        await ctx.reply(body, {parse_mode: 'HTML'})
+    } catch(e) {
+        console.error(e)
+    }
 }
 
 Object.keys(commands).forEach((label) => bot.command(label, (ctx) => processCommand(ctx)))
