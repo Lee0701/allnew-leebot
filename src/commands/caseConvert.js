@@ -42,6 +42,8 @@ const func = (args, body) => {
         }).join('.')
     } else if(values['random'] === true) {
         return body.split('').map((c) => (Math.random() >= 0.5 ? c.toUpperCase() : c.toLowerCase())).join('')
+    } else {
+        return body
     }
 }
 

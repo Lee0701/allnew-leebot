@@ -35,7 +35,7 @@ const processCommand = (ctx) => {
         const args = chunk.split(CMD_SPLITTER)
         const chunkCmdLabel = getLabel(args.shift())
         const {argsOptions, func} = commands[chunkCmdLabel]
-        const parsedArgs = parseArgs({args: args, options: argsOptions, allowPositionals: true})
+        const parsedArgs = parseArgs({args: args, options: argsOptions, strict: false, allowPositionals: true})
         if(!body && parsedArgs.positionals.length) body = parsedArgs.positionals.join(CMD_SPLITTER)
         const result = func(parsedArgs, body)
         body = result

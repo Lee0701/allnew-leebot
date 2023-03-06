@@ -34,7 +34,6 @@ const func = (args, body) => {
     const list = mfsjea.jeamfsList(body, values['moachigi'])
     const filtered = list.filter(({source, destination}) => source === (values['source'] || source) && destination === (values['destination'] || destination))
     const sorted = filtered.sort((a, b) => b.score - a.score)
-    console.log(sorted)
     if(values['list']) {
         return sorted.map(({str, source, destination}) => `${str} (${source}-${destination})`).join('\n')
     } else {
