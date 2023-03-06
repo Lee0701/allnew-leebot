@@ -38,6 +38,10 @@ const processCommand = async (ctx) => {
     for(let chunk of chunks) {
         const args = split(chunk, {separator: ARGS_SPLITTER, ...splitOptions})
         const chunkCmdLabel = getLabel(args.shift())
+        if(!commands[chunkCmdLabel]) {
+            body = `Command not found: ${chunkCmdLabel}`
+            break
+        }
         const {argsOptions, processor} = commands[chunkCmdLabel]
         const parsedArgs = parseArgs({args: args, options: argsOptions, strict: false, allowPositionals: true})
         if(!body && parsedArgs.positionals.length) body = parsedArgs.positionals.join(ARGS_SPLITTER)
