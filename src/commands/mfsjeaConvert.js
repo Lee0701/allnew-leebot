@@ -2,9 +2,9 @@
 const mfsjea = require('./mfsjea/mfsjea')
 
 const labels = [
-    'mfsjea-convert',
+    'mfsjeaConvert',
     'mfsjea',
-    'jeamfs-convert',
+    'jeamfsConvert',
     'jeamfs',
 ]
 

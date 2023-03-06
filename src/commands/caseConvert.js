@@ -1,6 +1,6 @@
 
 const labels = [
-    'case-convert',
+    'caseConvert',
     'case',
 ]
 

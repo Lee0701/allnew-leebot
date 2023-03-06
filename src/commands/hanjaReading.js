@@ -2,7 +2,7 @@
 const {convertHanjaReading} = require('./hanja-reading/hanja-reading')
 
 const labels = [
-    'hanja-reading',
+    'hanjaReading',
 ]
 
 const argsOptions = {
