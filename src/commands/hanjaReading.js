@@ -6,11 +6,32 @@ const labels = [
 ]
 
 const argsOptions = {
+    format: {
+        type: 'string',
+        short: 'f',
+        default: 'hanja(reading)'
+    },
+}
+
+const parseFormat = (str) => {
+    return (hanja, reading) => {
+        return str.toLowerCase()
+                .replace(/(hanja|h)/g, hanja)
+                .replace(/(reading|r)/g, reading)
+    }
+}
+
+const formatCache = {
+    'hanja(reading)': (hanja, reading) => `${hanja}(${reading})`,
+    'reading(hanja)': (hanja, reading) => `${reading}(${hanja})`,
+    'reading': (_hanja, reading) => `${reading}`,
 }
 
 const processor = async (args, body) => {
     const {values} = args
-    return convertHanjaReading(body)
+    const formatStr = values['format']
+    if(!formatCache[formatStr]) formatCache[formatStr] = parseFormat(formatStr)
+    return convertHanjaReading(body, formatCache[formatStr])
 }
 
 module.exports = {
