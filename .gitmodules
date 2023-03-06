@@ -1,0 +1,3 @@
+[submodule "src/commands/mfsjea"]
+	path = src/commands/mfsjea
+	url = https://github.com/Lee0701/mfsjea.git
