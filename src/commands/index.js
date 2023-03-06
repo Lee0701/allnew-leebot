@@ -7,5 +7,5 @@ const commands = [
 ]
 
 module.exports = Object.fromEntries(commands.flatMap(({labels, argsOptions, processor}) => {
-    return labels.map((label) => [label, {argsOptions, processor}])
+    return labels.map((label) => [label.toLowerCase(), {argsOptions, processor}])
 }))

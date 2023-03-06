@@ -37,7 +37,7 @@ const processCommand = async (ctx) => {
     let body = ''
     for(let chunk of chunks) {
         const args = split(chunk, {separator: ARGS_SPLITTER, ...splitOptions})
-        const chunkCmdLabel = getLabel(args.shift())
+        const chunkCmdLabel = getLabel(args.shift().toLowerCase())
         if(!commands[chunkCmdLabel]) {
             body = `Command not found: ${chunkCmdLabel}`
             break
@@ -55,6 +55,6 @@ const processCommand = async (ctx) => {
     }
 }
 
-Object.keys(commands).forEach((label) => bot.command(label, (ctx) => processCommand(ctx)))
+Object.keys(commands).forEach((label) => bot.command(label.toLowerCase(), (ctx) => processCommand(ctx)))
 
 bot.launch()
