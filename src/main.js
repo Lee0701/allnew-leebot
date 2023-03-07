@@ -46,7 +46,12 @@ const processCommand = async (ctx) => {
         }
         const {argsOptions, processor} = commands[chunkCmdLabel]
         const parsedArgs = parseArgs({args: args, options: argsOptions, strict: false, allowPositionals: true})
-        if(!body && parsedArgs.positionals.length) body = parsedArgs.positionals.join(ARGS_SPLITTER)
+        if(!body && parsedArgs.positionals.length) {
+            body = parsedArgs.positionals.join(ARGS_SPLITTER)
+            if(body == '^' && ctx.message.reply_to_message && ctx.message.reply_to_message.text) {
+                body = ctx.message.reply_to_message.text
+            }
+        }
         const result = await processor(parsedArgs, body)
         body = result
     }
