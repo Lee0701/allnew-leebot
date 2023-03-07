@@ -34,8 +34,12 @@ const processor = async (args, body) => {
     return convertHanjaReading(body, formatCache[formatStr])
 }
 
-module.exports = {
+const command = {
     labels,
     argsOptions,
     processor,
+}
+
+module.exports = {
+    commands: [command],
 }

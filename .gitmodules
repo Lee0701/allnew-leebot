@@ -1,6 +1,6 @@
-[submodule "src/commands/mfsjea"]
-	path = src/commands/mfsjea
-	url = https://github.com/Lee0701/mfsjea.git
 [submodule "seonbi"]
 	path = seonbi
 	url = https://github.com/Lee0701/seonbi.git
+[submodule "src/modules/mfsjea/mfsjea"]
+	path = src/modules/mfsjea/mfsjea
+	url = https://github.com/Lee0701/mfsjea.git

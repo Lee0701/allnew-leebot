@@ -47,8 +47,12 @@ const processor = async (args, body) => {
     }
 }
 
-module.exports = {
+const command = {
     labels,
     argsOptions,
     processor,
+}
+
+module.exports = {
+    commands: [command],
 }

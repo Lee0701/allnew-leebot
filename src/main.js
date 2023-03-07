@@ -4,7 +4,7 @@ const {Telegraf} = require('telegraf')
 const {parseArgs} = require('node:util')
 const split = require('split-string')
 
-const commands = require('./commands')
+const {modules, commands} = require('./modules')
 
 const CMDS_SPLITTER = process.env['CMD_SPLITTER'] || '|'
 const ARGS_SPLITTER = process.env['ARGS_SPLITTER'] || ' '

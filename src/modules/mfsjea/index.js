@@ -2,9 +2,7 @@
 const mfsjea = require('./mfsjea/mfsjea')
 
 const labels = [
-    'mfsjeaConvert',
     'mfsjea',
-    'jeamfsConvert',
     'jeamfs',
 ]
 
@@ -41,8 +39,12 @@ const processor = async (args, body) => {
     }
 }
 
-module.exports = {
+const command = {
     labels,
     argsOptions,
     processor,
+}
+
+module.exports = {
+    commands: [command],
 }
