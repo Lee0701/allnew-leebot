@@ -51,7 +51,9 @@ const processHook = async (text) => {
     const list = mfsjea.jeamfsList(text, false)
     const sorted = list.sort((a, b) => b.score - a.score)
     const {str, source, destination, score} = sorted[0]
+    const hangulCount = str.split('').filter((c) => c >= '가' && c <= '힣').length
     if(str == text) return null
+    else if(hangulCount == 0) return null
     else if(score / text.length >= 0.5) return `${str} (${source}-${destination})`
     else return null
 }
