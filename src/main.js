@@ -51,7 +51,7 @@ const processCommand = async (ctx) => {
         body = result
     }
     try {
-        await ctx.reply(body, {parse_mode: 'HTML'})
+        await ctx.reply(body, {parse_mode: 'HTML', reply_to_message_id: ctx.message.message_id})
     } catch(e) {
         console.error(e)
     }
@@ -62,7 +62,7 @@ Object.keys(commands).forEach((label) => bot.command(label.toLowerCase(), async 
 bot.on(message('text'), async (ctx) => {
     const results = await Promise.all(hooks.map(({processor}) => processor(ctx.message.text)))
     const filtered = results.filter((result) => result)
-    await Promise.all(filtered.map((result) => ctx.reply(result, {parse_mode: 'HTML'})))
+    await Promise.all(filtered.map((result) => ctx.reply(result, {parse_mode: 'HTML', reply_to_message_id: ctx.message.message_id})))
 })
 
 bot.launch()
