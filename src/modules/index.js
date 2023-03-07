@@ -12,7 +12,12 @@ const commands = Object.fromEntries(modules.flatMap((module) => {
     })
 }))
 
+const hooks = modules.flatMap((module) => {
+    return (module.hooks || [])
+})
+
 module.exports = {
     modules,
     commands,
+    hooks,
 }

@@ -27,7 +27,7 @@ const argsOptions = {
     },
 }
 
-const processor = async (args, body) => {
+const processCommand = async (args, body) => {
     const {values} = args
     const list = mfsjea.jeamfsList(body, values['moachigi'])
     const filtered = list.filter(({source, destination}) => source === (values['source'] || source) && destination === (values['destination'] || destination))
@@ -39,12 +39,26 @@ const processor = async (args, body) => {
     }
 }
 
+const processHook = async (text) => {
+    const list = mfsjea.jeamfsList(text, false)
+    const sorted = list.sort((a, b) => b.score - a.score)
+    const {str, source, destination, score} = sorted[0]
+    if(str == score) return null
+    if(score / text.length >= 0.5) return `${str} (${source}-${destination})`
+    else return null
+}
+
 const command = {
     labels,
     argsOptions,
-    processor,
+    processor: processCommand,
+}
+
+const hook = {
+    processor: processHook,
 }
 
 module.exports = {
     commands: [command],
+    hooks: [hook],
 }

@@ -1,10 +1,12 @@
 
 require('dotenv').config()
-const {Telegraf} = require('telegraf')
 const {parseArgs} = require('node:util')
 const split = require('split-string')
 
-const {modules, commands} = require('./modules')
+const {Telegraf} = require('telegraf')
+const {message} = require('telegraf/filters')
+
+const {modules, commands, hooks} = require('./modules')
 
 const CMDS_SPLITTER = process.env['CMD_SPLITTER'] || '|'
 const ARGS_SPLITTER = process.env['ARGS_SPLITTER'] || ' '
@@ -55,6 +57,12 @@ const processCommand = async (ctx) => {
     }
 }
 
-Object.keys(commands).forEach((label) => bot.command(label.toLowerCase(), (ctx) => processCommand(ctx)))
+Object.keys(commands).forEach((label) => bot.command(label.toLowerCase(), async (ctx) => await processCommand(ctx)))
+
+bot.on(message('text'), async (ctx) => {
+    const results = await Promise.all(hooks.map(({processor}) => processor(ctx.message.text)))
+    const filtered = results.filter((result) => result)
+    await Promise.all(filtered.map((result) => ctx.reply(result, {parse_mode: 'HTML'})))
+})
 
 bot.launch()
