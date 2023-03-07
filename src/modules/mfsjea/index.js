@@ -1,5 +1,10 @@
 
+const fs = require('fs')
+const path = require('path')
 const mfsjea = require('./mfsjea/mfsjea')
+
+const dict = new Set(fs.readFileSync(path.join(__dirname, 'words_alpha.txt'), 'utf8').split('\n')
+        .map((line) => line.trim()).filter((line) => line))
 
 const labels = [
     'mfsjea',
@@ -40,11 +45,14 @@ const processCommand = async (args, body) => {
 }
 
 const processHook = async (text) => {
+    const words = text.split(' ')
+    const wordCount = words.filter((word) => dict.has(word)).length
+    if(wordCount / words.length >= 0.5) return null
     const list = mfsjea.jeamfsList(text, false)
     const sorted = list.sort((a, b) => b.score - a.score)
     const {str, source, destination, score} = sorted[0]
-    if(str == score) return null
-    if(score / text.length >= 0.5) return `${str} (${source}-${destination})`
+    if(str == text) return null
+    else if(score / text.length >= 0.5) return `${str} (${source}-${destination})`
     else return null
 }
 
